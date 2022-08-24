@@ -36,7 +36,7 @@ fn main() {
     println!("Original data:");
     println!("{:?}", data);
 
-    // ToDo convert Ablesedatum into datetime
+// ToDo turn into function 'split_time' taking dataframe to avoid the non telling name 'data2'
     let parse_time = |name: &str| {
         col(name).str().strptime(StrpTimeOptions {
             fmt: Some("%d.%m.%Y %H:%M".into()),
@@ -65,7 +65,7 @@ fn main() {
     println!("After splitting date:");
     println!("{:?}", data2);
 
-    // ToDo convert to ecas format
+    // ToDo make function out of it to be a little bit more self-documenting
     println!("For each measurement:");
     let counter_num = data2.column("Zählernummer").unwrap();
     let counters = counter_num.unique().unwrap();
@@ -85,3 +85,4 @@ fn main() {
         );
     }
 }
+// ToDo convert to ecas format
