@@ -9,6 +9,3 @@ edition = "2021"
 version = "0.21.0"
 features = ["lazy", "strings"]
 
-[dependencies]
-polars-lazy = "0.21.0"
-polars-core = "0.21.0"
