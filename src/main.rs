@@ -46,11 +46,6 @@ fn main() {
     let data2 = data
         .lazy()
         .select(&[
-            col("Standort"),
-            col("Sparte"),
-            col("Zählernummer"),
-            col("Zählerstand"),
-            col("Zählerstand_NT"),
             parse_time("Ablesedatum")
                 .dt()
                 .strftime("%d.%m.%Y")
@@ -59,6 +54,9 @@ fn main() {
                 .dt()
                 .strftime("%H:%M")
                 .alias("Ablesezeit"),
+            col("Zählerstand"),
+            col("Notes") + col("Notes_2"),
+            col("Zählernummer")
         ])
         .collect()
         .unwrap();
@@ -69,6 +67,7 @@ fn main() {
     println!("For each measurement:");
     let counter_num = data2.column("Zählernummer").unwrap();
     let counters = counter_num.unique().unwrap();
+    
     for counter_id in 0..counters.len() {
         println!();
 
@@ -78,10 +77,11 @@ fn main() {
             AnyValue::Utf8Owned(ref str) => str,
             value => panic!("Unimplemented / unexpected type {:?}", value),
         };
+
         println!("{}:", id);
         println!(
             "{:?}",
-            data2.filter(&counter_num.equal(id).unwrap()).unwrap()
+            data2.filter(&counter_num.equal(id).unwrap()).unwrap().drop("Zählernummer").unwrap()
         );
     }
 }
