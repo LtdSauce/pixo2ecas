@@ -53,11 +53,11 @@ fn main() {
         .select(&[
             parse_time("Ablesedatum")
                 .dt()
-                .strftime("%d.%m.%Y")
+                .strftime("%Y-%m-%d")
                 .alias("Ablesetag"),
             parse_time("Ablesedatum")
                 .dt()
-                .strftime("%H:%M")
+                .strftime("%H:%M:%S")
                 .alias("Ablesezeit"),
             col("Zählerstand"),
             col("Notes") + col("Notes_2"),
