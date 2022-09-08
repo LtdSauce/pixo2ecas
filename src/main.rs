@@ -61,7 +61,7 @@ fn main() {
                 .alias("Ablesezeit"),
             col("Zählerstand"),
             col("Notes") + col("Notes_2"),
-            col("Zählernummer")
+            (col("Sparte") + col("Zählernummer") + col("Standort")).alias("identifier")
         ])
         .collect()
         .unwrap();
@@ -70,7 +70,7 @@ fn main() {
 
     // ToDo make function out of it to be a little bit more self-documenting
     println!("For each measurement:");
-    let counter_num = data2.column("Zählernummer").unwrap();
+    let counter_num = data2.column("identifier").unwrap();
     let counters = counter_num.unique().unwrap();
     
     for counter_id in 0..counters.len() {
@@ -84,7 +84,7 @@ fn main() {
         };
         let out_filename = format!("{id}.csv");
         println!("Writing following data to file {out_filename}:");
-        let mut data = data2.filter(&counter_num.equal(id).unwrap()).unwrap().drop("Zählernummer").unwrap();
+        let mut data = data2.filter(&counter_num.equal(id).unwrap()).unwrap().drop("identifier").unwrap();
         println!(
             "{:?}",
             data
