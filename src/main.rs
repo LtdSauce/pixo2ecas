@@ -1,13 +1,18 @@
 use polars::prelude::*;
 
+fn get_pixo_filename() -> String {
+    let args: Vec<String> = std::env::args().collect();
+    let mut filename = String::from("test/res/pixometer_mixed_sources.csv");
+    if args.len() == 2 {
+        filename = String::from(args[1].as_str());
+    }
+    return filename;
+
+}
+
 fn main() {
-    println!("Hello, which file do you want to convert?");
-    //let mut file_to_convert = String::new();
-    //io::stdin()
-    //    .read_line(&mut file_to_convert)
-    //    .expect("Path to file couldn't be read");
-    // ToDo reenable the above and let the program prompt for the file to read
-    let file_to_convert = "test/res/pixometer_mixed_sources.csv".to_string();
+    
+    let file_to_convert = get_pixo_filename();
     println!(
         "Converting {} into the ecas format and writing output to current folder",
         file_to_convert
