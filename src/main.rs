@@ -11,7 +11,7 @@ fn get_pixo_filename() -> String {
 }
 
 fn main() {
-    
+
     let file_to_convert = get_pixo_filename();
     println!(
         "Converting {} into the ecas format and writing output to current folder",
@@ -82,12 +82,17 @@ fn main() {
             AnyValue::Utf8Owned(ref str) => str,
             value => panic!("Unimplemented / unexpected type {:?}", value),
         };
-
-        println!("{}:", id);
+        let out_filename = format!("{id}.csv");
+        println!("Writing following data to file {out_filename}:");
+        let mut data = data2.filter(&counter_num.equal(id).unwrap()).unwrap().drop("Zählernummer").unwrap();
         println!(
             "{:?}",
-            data2.filter(&counter_num.equal(id).unwrap()).unwrap().drop("Zählernummer").unwrap()
+            data
         );
+        CsvWriter::new( std::fs::File::create(out_filename).unwrap())
+        .has_header(false)
+        .finish(&mut data)
+        .unwrap();
     }
 }
 // ToDo convert to ecas format
